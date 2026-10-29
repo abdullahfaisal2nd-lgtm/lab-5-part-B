@@ -1,7 +1,7 @@
 #ifndef LAB05_PART_B_LIST_H
 #define LAB05_PART_B_LIST_H
 
-/* Name: M.Haroon-Ur-Rasheed Khan | Reg. No: Ai-9 | Subject: DSA | Sec: A */
+/* Name: M.Abdullah Faisal | Reg. No: Ai-23 | Subject: DSA | Sec: A */
 // Lab 05 Part B: Individual Library Management Project
 
 #include <iostream>
