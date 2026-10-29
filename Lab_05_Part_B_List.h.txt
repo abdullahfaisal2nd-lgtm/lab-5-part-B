@@ -1,0 +1,187 @@
+#ifndef LAB05_PART_B_LIST_H
+#define LAB05_PART_B_LIST_H
+
+/* Name: M.Haroon-Ur-Rasheed Khan | Reg. No: Ai-9 | Subject: DSA | Sec: A */
+// Lab 05 Part B: Individual Library Management Project
+
+#include <iostream>
+#include <string>
+#include <utility>
+
+using namespace std;
+
+struct LibraryBook
+{
+    int id;
+    string title;
+    LibraryBook* next;
+
+    LibraryBook(int bookID, const string& bookTitle)
+        : id(bookID), title(bookTitle), next(nullptr) {}
+};
+
+class LibraryList
+{
+private:
+    LibraryBook* head;
+    int count;
+
+    LibraryBook* getNodeAt(int index) const
+    {
+        LibraryBook* current = head;
+        while (current != nullptr && index > 0)
+        {
+            current = current->next;
+            index--;
+        }
+        return current;
+    }
+
+    void clear()
+    {
+        while (head != nullptr)
+            delete Remove();
+        count = 0;
+    }
+
+    void copyFrom(const LibraryList& other)
+    {
+        for (LibraryBook* current = other.head; current != nullptr;
+             current = current->next)
+        {
+            InsertAt(new LibraryBook(current->id, current->title), count);
+        }
+    }
+
+public:
+    LibraryList() : head(nullptr), count(0) {}
+
+    LibraryList(const LibraryList& other) : head(nullptr), count(0)
+    {
+        copyFrom(other);
+    }
+
+    LibraryList& operator=(const LibraryList& other)
+    {
+        if (this != &other)
+        {
+            clear();
+            copyFrom(other);
+        }
+        return *this;
+    }
+
+    ~LibraryList() { clear(); }
+
+    void Insert(LibraryBook* book)
+    {
+        if (book == nullptr)
+            return;
+        book->next = head;
+        head = book;
+        count++;
+    }
+
+    LibraryBook* Remove()
+    {
+        if (head == nullptr)
+            return nullptr;
+        LibraryBook* removed = head;
+        head = head->next;
+        removed->next = nullptr;
+        count--;
+        return removed;
+    }
+
+    bool IsEmpty() const { return head == nullptr; }
+    bool IsNotEmpty() const { return head != nullptr; }
+
+    void InsertAt(LibraryBook* book, int index)
+    {
+        if (book == nullptr)
+            return;
+        if (index <= 0)
+        {
+            Insert(book);
+            return;
+        }
+        if (index > count)
+            index = count;
+
+        LibraryBook* previous = getNodeAt(index - 1);
+        book->next = previous->next;
+        previous->next = book;
+        count++;
+    }
+
+    LibraryBook* RemoveAt(int index)
+    {
+        if (IsEmpty())
+            return nullptr;
+        if (index <= 0)
+            return Remove();
+        if (index >= count)
+            index = count - 1;
+
+        LibraryBook* previous = getNodeAt(index - 1);
+        LibraryBook* removed = previous->next;
+        previous->next = removed->next;
+        removed->next = nullptr;
+        count--;
+        return removed;
+    }
+
+    void Swap(int firstIndex, int secondIndex)
+    {
+        if (firstIndex < 0 || secondIndex < 0 ||
+            firstIndex >= count || secondIndex >= count ||
+            firstIndex == secondIndex)
+            return;
+
+        LibraryBook* first = getNodeAt(firstIndex);
+        LibraryBook* second = getNodeAt(secondIndex);
+        swap(first->id, second->id);
+        swap(first->title, second->title);
+    }
+
+    void Sort()
+    {
+        for (LibraryBook* first = head; first != nullptr; first = first->next)
+        {
+            for (LibraryBook* second = first->next; second != nullptr;
+                 second = second->next)
+            {
+                if (first->id > second->id)
+                {
+                    swap(first->id, second->id);
+                    swap(first->title, second->title);
+                }
+            }
+        }
+    }
+
+    void Reverse()
+    {
+        LibraryBook* previous = nullptr;
+        while (head != nullptr)
+        {
+            LibraryBook* next = head->next;
+            head->next = previous;
+            previous = head;
+            head = next;
+        }
+        head = previous;
+    }
+
+    void Print() const
+    {
+        for (LibraryBook* current = head; current != nullptr;
+             current = current->next)
+        {
+            cout << current->id << " - " << current->title << '\n';
+        }
+        cout << "Total: " << count << '\n';
+    }
+};
+
+#endif

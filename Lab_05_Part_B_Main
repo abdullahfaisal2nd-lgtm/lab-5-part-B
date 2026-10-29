@@ -1,0 +1,42 @@
+/* Name: M.Haroon-Ur-Rasheed Khan | Reg. No: Ai-9 | Subject: DSA | Sec: A */
+// Lab 05 Part B: Individual project demonstration
+
+#include "Lab_05_Part_B_List.h"
+
+int main()
+{
+    LibraryList books;
+
+    books.InsertAt(new LibraryBook(103, "Operating Systems"), 0);
+    books.InsertAt(new LibraryBook(101, "Data Structures"), 1);
+    books.InsertAt(new LibraryBook(105, "Computer Networks"), 2);
+    books.InsertAt(new LibraryBook(102, "Database Systems"), 3);
+
+    cout << "Initial library collection:\n";
+    books.Print();
+
+    books.InsertAt(new LibraryBook(104, "Software Engineering"), 2);
+    cout << "\nAfter inserting at index 2:\n";
+    books.Print();
+
+    LibraryBook* removed = books.RemoveAt(1);
+    if (removed != nullptr)
+    {
+        cout << "\nRemoved book: " << removed->title << '\n';
+        delete removed;
+    }
+
+    books.Swap(0, 2);
+    cout << "\nAfter swapping indexes 0 and 2:\n";
+    books.Print();
+
+    books.Sort();
+    cout << "\nAfter sorting by book ID:\n";
+    books.Print();
+
+    books.Reverse();
+    cout << "\nAfter reversing the collection:\n";
+    books.Print();
+
+    return 0;
+}
